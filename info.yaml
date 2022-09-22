@@ -6,33 +6,46 @@
 #
 # This will be automatically collected and used to make a datasheet for the chip.
 project: 
-  author:       ""      # Your name
-  title:        ""      # Project title
-  description:  ""      # Short description of what your project does
-  how_it_works: ""      # Longer description of how the project works
-  how_to_test:  ""      # Instructions on how someone could test your project, include things like what buttons do what and how to set the clock if needed
-  external_hw:  ""      # Describe any external hardware needed
-  doc_link:     ""      # URL to longer form documentation, eg the README.md in your repository
+  author:       "Thomas Böhm <thomas.bohm@gmail.com>"      # Your name
+  title:        "Pseudo-random number generator"      # Project title
+  description:  "Pseudo-random number generator using a 16-bit Fibonacci linear-feedback shift register"      # Short description of what your project does
+  how_it_works: "16 flip flops are connected in a chain, and the output of some is XORed together and fed back into the first flip flop.
+                 The outputs that are XORed together are chosen in such a way as to give the longest possible cycle (2^16-1).
+                 All bits being zero is a special case and is treated separately (all negative outputs of the flip flops are ANDed together to generate a 1 as feedback).
+                 
+                 On each clock pulse (pin 1) one new bit is generated.
+                 Setting load_en (pin 3) to HIGH allows the loading of a user defined value through the data_in pin (pin2). On each clock pulse one bit is
+                 read into the flip flop chain. When load_en (pin 3) is set to LOW the computed feedback bit is fed back into the flip flops.
+                 
+                 The outputs of the last 8 flip flops are connected to the output pins. For each clock pulse a random bit is generated and the other 7 are shifted.
+                 "      # Longer description of how the project works
+  how_to_test:  "Set the switch for pin 1 so that the push button generates the clock.
+                 Press on it and see the output change on the hex display.
+                 
+                 Using pin 2 and 3 a custom value can be loaded into the flip flops.
+                 "      # Instructions on how someone could test your project, include things like what buttons do what and how to set the clock if needed
+  external_hw:  "None"  # Describe any external hardware needed
+  doc_link:     "https://github.com/tcptomato/tinytapeout//blob/main/README.md"      # URL to longer form documentation, eg the README.md in your repository
   clock_hz:     0       # Clock frequency in Hz (if required)
   language:     "wokwi" # other examples include Verilog, Amaranth, VHDL, etc
-  wokwi_id:     0       # the wokwi ID
+  wokwi_id:     341178154799333971       # the wokwi ID
   picture:      ""      # relative path to a picture in your repository
   inputs:               # a description of what the inputs do
     - clock
-    - reset
-    - none
+    - data_in
+    - load_en
     - none
     - none
     - none
     - none
     - none
   outputs:
-    - segment a         # a description of what the outputs do
-    - segment b
-    - segment c
-    - segment d
-    - segment e
-    - segment f
-    - segment g
-    - none
+    - random bit 0        # a description of what the outputs do
+    - random bit 1
+    - random bit 2
+    - random bit 3
+    - random bit 4
+    - random bit 5
+    - random bit 6
+    - random bit 7
 
